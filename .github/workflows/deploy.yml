@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - master  # 雙保險：無論你的分支叫 main 還是 master 都會觸發
+      - master
 
 permissions:
   contents: write
@@ -33,8 +33,18 @@ jobs:
       - name: Build Project
         run: pnpm build --filter client... || pnpm build
 
+      - name: Find and Prepare Dist Folder
+        run: |
+          # 自動尋找打包出來的 index.html 到底在哪個資料夾
+          TARGET_DIR=$(find . -name "index.html" -not -path "*/node_modules/*" -not -path "*/client/src/*" | head -n 1 | xargs dirname)
+          echo "Found index.html in: $TARGET_DIR"
+          
+          # 如果在子目錄，就把它複製到根目錄的 deploy_dist
+          mkdir -p deploy_dist
+          cp -r $TARGET_DIR/* deploy_dist/
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist  # Vite 預設會打包在 client/dist
-          branch: gh-pages      # 自動把網頁檔案丟到這個分支
+          folder: deploy_dist  # 部署我們自動抓取出來的資料夾
+          branch: gh-pages
