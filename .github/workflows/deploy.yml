@@ -46,5 +46,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: deploy_dist  # 部署我們自動抓取出來的資料夾
+          folder: dist/public  # 部署我們自動抓取出來的資料夾
           branch: gh-pages
