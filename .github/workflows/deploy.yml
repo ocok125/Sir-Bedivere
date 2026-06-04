@@ -36,5 +36,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: client/dist  # Vite 預設會打包在 client/dist
+          folder: dist  # Vite 預設會打包在 client/dist
           branch: gh-pages      # 自動把網頁檔案丟到這個分支
