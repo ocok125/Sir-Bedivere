@@ -1,11 +1,11 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Router as WouterRouter } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location"; // 👈 引入 Hash 路由
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-
 
 function Router() {
   return (
@@ -32,7 +32,10 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
-          <Router />
+          {/* 👈 用 WouterRouter 包裹，並指定使用 hash 路由，徹底解決 GitHub Pages 404 問題 */}
+          <WouterRouter hook={useHashLocation}>
+            <Router />
+          </WouterRouter>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
